@@ -1,0 +1,3 @@
+
+[fallback line coverage] sales.py: 145/145 dòng = 100.0%
+Dòng chưa được chạy: không có

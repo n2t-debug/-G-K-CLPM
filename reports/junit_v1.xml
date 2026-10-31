@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="50" skipped="0" tests="166" time="0.495" timestamp="2026-10-28T03:57:09.175204+07:00" hostname="vm"><testcase classname="test_sales.TestProduct" name="test_valid_product" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[-n-1-1]" time="0.001" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[   -n-1-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[None-n-1-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s--1-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-None-1-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n-0-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n--5-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n-10.5-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n-True-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n-100-1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n-1--1]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n-1-1.5]" time="0.000" /><testcase classname="test_sales.TestProduct" name="test_invalid_product_rejected[s-n-1-True]" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_add_and_get" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_add_duplicate_sku_rejected" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_add_non_product_rejected" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_get_unknown_sku[NOPE]" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_get_unknown_sku[]" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_get_unknown_sku[None]" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_get_unknown_sku[123]" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_get_unknown_sku[sku4]" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_deduct_reduces_stock" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_restock_increases_stock" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_restock_invalid_quantity[0]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestInventory object at 0x7f1c2ff20230&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2ff20050&gt;, qty = 0
+
+    @pytest.mark.parametrize("qty", [0, -1])
+    def test_restock_invalid_quantity(self, inv, qty):
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:97: Failed</failure></testcase><testcase classname="test_sales.TestInventory" name="test_restock_invalid_quantity[-1]" time="0.000" /><testcase classname="test_sales.TestInventory" name="test_deduct_all_stock_leaves_zero" time="0.000"><failure message="sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5">self = &lt;test_sales.TestInventory object at 0x7f1c2ff07310&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2ff073f0&gt;
+
+    def test_deduct_all_stock_leaves_zero(self, inv):
+&gt;       inv.deduct("C003", 5)
+
+test_sales.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:103: in deduct
+    self.check_availability(sku, qty)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;sales_v1.Inventory object at 0x7f1c2ff073f0&gt;, sku = 'C003', qty = 5
+
+    def check_availability(self, sku, qty) -&gt; None:
+        validate_quantity(qty)
+        product = self.get(sku)
+        # BUG-02: dùng "&gt;=" -&gt; mua đúng bằng số tồn bị từ chối nhầm
+        if qty &gt;= product.stock:
+&gt;           raise OutOfStockError(f"{sku}: cần {qty}, chỉ còn {product.stock}")
+E           sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5
+
+sales_v1.py:100: OutOfStockError</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_valid_quantities[1]" time="0.000" /><testcase classname="test_sales.TestQuantityBoundary" name="test_valid_quantities[2]" time="0.000" /><testcase classname="test_sales.TestQuantityBoundary" name="test_valid_quantities[999]" time="0.000" /><testcase classname="test_sales.TestQuantityBoundary" name="test_valid_quantities[1000]" time="0.000" /><testcase classname="test_sales.TestQuantityBoundary" name="test_out_of_range_quantities[0]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c2ff45c70&gt;, qty = 0
+
+    @pytest.mark.parametrize("qty", [0, -1, -100, 1001])
+    def test_out_of_range_quantities(self, qty):
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:115: Failed</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_out_of_range_quantities[-1]" time="0.000" /><testcase classname="test_sales.TestQuantityBoundary" name="test_out_of_range_quantities[-100]" time="0.000" /><testcase classname="test_sales.TestQuantityBoundary" name="test_out_of_range_quantities[1001]" time="0.000" /><testcase classname="test_sales.TestQuantityBoundary" name="test_wrong_type_quantities[2.5]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c2fefce50&gt;, qty = 2.5
+
+    @pytest.mark.parametrize("qty", [2.5, 1.0, "3", None, True, False, [1]])
+    def test_wrong_type_quantities(self, qty):
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:120: Failed</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_wrong_type_quantities[1.0]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c2ff20320&gt;, qty = 1.0
+
+    @pytest.mark.parametrize("qty", [2.5, 1.0, "3", None, True, False, [1]])
+    def test_wrong_type_quantities(self, qty):
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:120: Failed</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_wrong_type_quantities[3]" time="0.000"><failure message="TypeError: '&lt;' not supported between instances of 'str' and 'int'">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c2ff20410&gt;, qty = '3'
+
+    @pytest.mark.parametrize("qty", [2.5, 1.0, "3", None, True, False, [1]])
+    def test_wrong_type_quantities(self, qty):
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.validate_quantity(qty)
+
+test_sales.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+qty = '3'
+
+    def validate_quantity(qty) -&gt; int:
+        # BUG-09: không kiểm tra kiểu dữ liệu -&gt; chấp nhận float (2.5), bool (True)
+        # BUG-01: dùng "qty &lt; 0" thay vì "qty &lt;= 0" -&gt; chấp nhận số lượng bằng 0
+&gt;       if qty &lt; 0:
+           ^^^^^^^
+E       TypeError: '&lt;' not supported between instances of 'str' and 'int'
+
+sales_v1.py:68: TypeError</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_wrong_type_quantities[None]" time="0.000"><failure message="TypeError: '&lt;' not supported between instances of 'NoneType' and 'int'">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c2ff4cad0&gt;, qty = None
+
+    @pytest.mark.parametrize("qty", [2.5, 1.0, "3", None, True, False, [1]])
+    def test_wrong_type_quantities(self, qty):
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.validate_quantity(qty)
+
+test_sales.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+qty = None
+
+    def validate_quantity(qty) -&gt; int:
+        # BUG-09: không kiểm tra kiểu dữ liệu -&gt; chấp nhận float (2.5), bool (True)
+        # BUG-01: dùng "qty &lt; 0" thay vì "qty &lt;= 0" -&gt; chấp nhận số lượng bằng 0
+&gt;       if qty &lt; 0:
+           ^^^^^^^
+E       TypeError: '&lt;' not supported between instances of 'NoneType' and 'int'
+
+sales_v1.py:68: TypeError</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_wrong_type_quantities[True]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c2ff4cc90&gt;, qty = True
+
+    @pytest.mark.parametrize("qty", [2.5, 1.0, "3", None, True, False, [1]])
+    def test_wrong_type_quantities(self, qty):
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:120: Failed</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_wrong_type_quantities[False]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c301672b0&gt;, qty = False
+
+    @pytest.mark.parametrize("qty", [2.5, 1.0, "3", None, True, False, [1]])
+    def test_wrong_type_quantities(self, qty):
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:120: Failed</failure></testcase><testcase classname="test_sales.TestQuantityBoundary" name="test_wrong_type_quantities[qty6]" time="0.000"><failure message="TypeError: '&lt;' not supported between instances of 'list' and 'int'">self = &lt;test_sales.TestQuantityBoundary object at 0x7f1c3015d010&gt;, qty = [1]
+
+    @pytest.mark.parametrize("qty", [2.5, 1.0, "3", None, True, False, [1]])
+    def test_wrong_type_quantities(self, qty):
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.validate_quantity(qty)
+
+test_sales.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+qty = [1]
+
+    def validate_quantity(qty) -&gt; int:
+        # BUG-09: không kiểm tra kiểu dữ liệu -&gt; chấp nhận float (2.5), bool (True)
+        # BUG-01: dùng "qty &lt; 0" thay vì "qty &lt;= 0" -&gt; chấp nhận số lượng bằng 0
+&gt;       if qty &lt; 0:
+           ^^^^^^^
+E       TypeError: '&lt;' not supported between instances of 'list' and 'int'
+
+sales_v1.py:68: TypeError</failure></testcase><testcase classname="test_sales.TestAvailabilityBoundary" name="test_below_stock" time="0.000" /><testcase classname="test_sales.TestAvailabilityBoundary" name="test_exactly_stock" time="0.000"><failure message="sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5">self = &lt;test_sales.TestAvailabilityBoundary object at 0x7f1c30153390&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2feb8d50&gt;
+
+    def test_exactly_stock(self, inv):
+&gt;       inv.check_availability("C003", 5)
+
+test_sales.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;sales_v1.Inventory object at 0x7f1c2feb8d50&gt;, sku = 'C003', qty = 5
+
+    def check_availability(self, sku, qty) -&gt; None:
+        validate_quantity(qty)
+        product = self.get(sku)
+        # BUG-02: dùng "&gt;=" -&gt; mua đúng bằng số tồn bị từ chối nhầm
+        if qty &gt;= product.stock:
+&gt;           raise OutOfStockError(f"{sku}: cần {qty}, chỉ còn {product.stock}")
+E           sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5
+
+sales_v1.py:100: OutOfStockError</failure></testcase><testcase classname="test_sales.TestAvailabilityBoundary" name="test_above_stock" time="0.000" /><testcase classname="test_sales.TestAvailabilityBoundary" name="test_zero_stock_product" time="0.000" /><testcase classname="test_sales.TestAvailabilityBoundary" name="test_unknown_sku" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[0-None-0]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[1-None-0]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[499999-None-0]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[500000-None-5]" time="0.001"><failure message="assert 0 == 5&#10; +  where 0 = &lt;function get_discount_percent at 0x7f1c2ff09580&gt;(500000, None)&#10; +    where &lt;function get_discount_percent at 0x7f1c2ff09580&gt; = S.get_discount_percent">self = &lt;test_sales.TestDiscountBoundary object at 0x7f1c300efa80&gt;
+subtotal = 500000, coupon = None, expected = 5
+
+    @pytest.mark.parametrize("subtotal,coupon,expected", [
+        (0, None, 0),
+        (1, None, 0),
+        (499_999, None, 0),            # sát dưới ngưỡng 5%
+        (500_000, None, 5),            # đúng ngưỡng 5%
+        (500_001, None, 5),
+        (999_999, None, 5),            # sát dưới ngưỡng 10%
+        (1_000_000, None, 10),         # đúng ngưỡng 10%
+        (1_000_001, None, 10),
+        (100_000, "", 0),              # chuỗi rỗng = không dùng coupon
+        (100_000, "   ", 0),
+        (100_000, "SALE10", 10),
+        (100_000, "VIP20", 20),
+        (100_000, "sale10", 10),       # không phân biệt hoa thường
+        (100_000, "  VIP20  ", 20),    # bỏ khoảng trắng thừa
+        (500_000, "SALE10", 10),       # coupon &gt; bậc: lấy coupon
+        (1_000_000, "SALE10", 10),     # bằng nhau: không cộng dồn
+        (1_000_000, "VIP20", 20),
+        (600_000, "SALE10", 10),
+    ])
+    def test_discount_percent(self, subtotal, coupon, expected):
+&gt;       assert S.get_discount_percent(subtotal, coupon) == expected
+E       assert 0 == 5
+E        +  where 0 = &lt;function get_discount_percent at 0x7f1c2ff09580&gt;(500000, None)
+E        +    where &lt;function get_discount_percent at 0x7f1c2ff09580&gt; = S.get_discount_percent
+
+test_sales.py:171: AssertionError</failure></testcase><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[500001-None-5]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[999999-None-5]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[1000000-None-10]" time="0.001"><failure message="assert 5 == 10&#10; +  where 5 = &lt;function get_discount_percent at 0x7f1c2ff09580&gt;(1000000, None)&#10; +    where &lt;function get_discount_percent at 0x7f1c2ff09580&gt; = S.get_discount_percent">self = &lt;test_sales.TestDiscountBoundary object at 0x7f1c2ff0d150&gt;
+subtotal = 1000000, coupon = None, expected = 10
+
+    @pytest.mark.parametrize("subtotal,coupon,expected", [
+        (0, None, 0),
+        (1, None, 0),
+        (499_999, None, 0),            # sát dưới ngưỡng 5%
+        (500_000, None, 5),            # đúng ngưỡng 5%
+        (500_001, None, 5),
+        (999_999, None, 5),            # sát dưới ngưỡng 10%
+        (1_000_000, None, 10),         # đúng ngưỡng 10%
+        (1_000_001, None, 10),
+        (100_000, "", 0),              # chuỗi rỗng = không dùng coupon
+        (100_000, "   ", 0),
+        (100_000, "SALE10", 10),
+        (100_000, "VIP20", 20),
+        (100_000, "sale10", 10),       # không phân biệt hoa thường
+        (100_000, "  VIP20  ", 20),    # bỏ khoảng trắng thừa
+        (500_000, "SALE10", 10),       # coupon &gt; bậc: lấy coupon
+        (1_000_000, "SALE10", 10),     # bằng nhau: không cộng dồn
+        (1_000_000, "VIP20", 20),
+        (600_000, "SALE10", 10),
+    ])
+    def test_discount_percent(self, subtotal, coupon, expected):
+&gt;       assert S.get_discount_percent(subtotal, coupon) == expected
+E       assert 5 == 10
+E        +  where 5 = &lt;function get_discount_percent at 0x7f1c2ff09580&gt;(1000000, None)
+E        +    where &lt;function get_discount_percent at 0x7f1c2ff09580&gt; = S.get_discount_percent
+
+test_sales.py:171: AssertionError</failure></testcase><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[1000001-None-10]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[100000--0]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[100000-   -0]" time="0.000"><failure message="sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: '   '">self = &lt;test_sales.TestDiscountBoundary object at 0x7f1c2ff206e0&gt;
+subtotal = 100000, coupon = '   ', expected = 0
+
+    @pytest.mark.parametrize("subtotal,coupon,expected", [
+        (0, None, 0),
+        (1, None, 0),
+        (499_999, None, 0),            # sát dưới ngưỡng 5%
+        (500_000, None, 5),            # đúng ngưỡng 5%
+        (500_001, None, 5),
+        (999_999, None, 5),            # sát dưới ngưỡng 10%
+        (1_000_000, None, 10),         # đúng ngưỡng 10%
+        (1_000_001, None, 10),
+        (100_000, "", 0),              # chuỗi rỗng = không dùng coupon
+        (100_000, "   ", 0),
+        (100_000, "SALE10", 10),
+        (100_000, "VIP20", 20),
+        (100_000, "sale10", 10),       # không phân biệt hoa thường
+        (100_000, "  VIP20  ", 20),    # bỏ khoảng trắng thừa
+        (500_000, "SALE10", 10),       # coupon &gt; bậc: lấy coupon
+        (1_000_000, "SALE10", 10),     # bằng nhau: không cộng dồn
+        (1_000_000, "VIP20", 20),
+        (600_000, "SALE10", 10),
+    ])
+    def test_discount_percent(self, subtotal, coupon, expected):
+&gt;       assert S.get_discount_percent(subtotal, coupon) == expected
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_sales.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+subtotal = 100000, coupon = '   '
+
+    def get_discount_percent(subtotal: int, coupon=None) -&gt; int:
+        if not _is_int(subtotal) or subtotal &lt; 0:
+            raise InvalidOrderError("Tạm tính phải là số nguyên không âm")
+        tier = 0
+        for threshold, percent in TIER_DISCOUNTS:
+            # BUG-03: dùng "&gt;" thay vì "&gt;=" tại biên bậc giảm giá
+            if subtotal &gt; threshold:
+                tier = percent
+                break
+        coupon_percent = 0
+        if coupon is not None:
+            if not isinstance(coupon, str):
+                raise InvalidDiscountError(f"Mã giảm giá phải là chuỗi: {coupon!r}")
+            # BUG-07: không strip()/upper() -&gt; phân biệt hoa thường, vướng khoảng trắng
+            code = coupon
+            if code:
+                if code not in COUPONS:
+&gt;                   raise InvalidDiscountError(f"Mã giảm giá không hợp lệ: {coupon!r}")
+E                   sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: '   '
+
+sales_v1.py:151: InvalidDiscountError</failure></testcase><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[100000-SALE10-10]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[100000-VIP20-20]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[100000-sale10-10]" time="0.000"><failure message="sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: 'sale10'">self = &lt;test_sales.TestDiscountBoundary object at 0x7f1c2ff4e970&gt;
+subtotal = 100000, coupon = 'sale10', expected = 10
+
+    @pytest.mark.parametrize("subtotal,coupon,expected", [
+        (0, None, 0),
+        (1, None, 0),
+        (499_999, None, 0),            # sát dưới ngưỡng 5%
+        (500_000, None, 5),            # đúng ngưỡng 5%
+        (500_001, None, 5),
+        (999_999, None, 5),            # sát dưới ngưỡng 10%
+        (1_000_000, None, 10),         # đúng ngưỡng 10%
+        (1_000_001, None, 10),
+        (100_000, "", 0),              # chuỗi rỗng = không dùng coupon
+        (100_000, "   ", 0),
+        (100_000, "SALE10", 10),
+        (100_000, "VIP20", 20),
+        (100_000, "sale10", 10),       # không phân biệt hoa thường
+        (100_000, "  VIP20  ", 20),    # bỏ khoảng trắng thừa
+        (500_000, "SALE10", 10),       # coupon &gt; bậc: lấy coupon
+        (1_000_000, "SALE10", 10),     # bằng nhau: không cộng dồn
+        (1_000_000, "VIP20", 20),
+        (600_000, "SALE10", 10),
+    ])
+    def test_discount_percent(self, subtotal, coupon, expected):
+&gt;       assert S.get_discount_percent(subtotal, coupon) == expected
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_sales.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+subtotal = 100000, coupon = 'sale10'
+
+    def get_discount_percent(subtotal: int, coupon=None) -&gt; int:
+        if not _is_int(subtotal) or subtotal &lt; 0:
+            raise InvalidOrderError("Tạm tính phải là số nguyên không âm")
+        tier = 0
+        for threshold, percent in TIER_DISCOUNTS:
+            # BUG-03: dùng "&gt;" thay vì "&gt;=" tại biên bậc giảm giá
+            if subtotal &gt; threshold:
+                tier = percent
+                break
+        coupon_percent = 0
+        if coupon is not None:
+            if not isinstance(coupon, str):
+                raise InvalidDiscountError(f"Mã giảm giá phải là chuỗi: {coupon!r}")
+            # BUG-07: không strip()/upper() -&gt; phân biệt hoa thường, vướng khoảng trắng
+            code = coupon
+            if code:
+                if code not in COUPONS:
+&gt;                   raise InvalidDiscountError(f"Mã giảm giá không hợp lệ: {coupon!r}")
+E                   sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: 'sale10'
+
+sales_v1.py:151: InvalidDiscountError</failure></testcase><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[100000-  VIP20  -20]" time="0.001"><failure message="sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: '  VIP20  '">self = &lt;test_sales.TestDiscountBoundary object at 0x7f1c30167450&gt;
+subtotal = 100000, coupon = '  VIP20  ', expected = 20
+
+    @pytest.mark.parametrize("subtotal,coupon,expected", [
+        (0, None, 0),
+        (1, None, 0),
+        (499_999, None, 0),            # sát dưới ngưỡng 5%
+        (500_000, None, 5),            # đúng ngưỡng 5%
+        (500_001, None, 5),
+        (999_999, None, 5),            # sát dưới ngưỡng 10%
+        (1_000_000, None, 10),         # đúng ngưỡng 10%
+        (1_000_001, None, 10),
+        (100_000, "", 0),              # chuỗi rỗng = không dùng coupon
+        (100_000, "   ", 0),
+        (100_000, "SALE10", 10),
+        (100_000, "VIP20", 20),
+        (100_000, "sale10", 10),       # không phân biệt hoa thường
+        (100_000, "  VIP20  ", 20),    # bỏ khoảng trắng thừa
+        (500_000, "SALE10", 10),       # coupon &gt; bậc: lấy coupon
+        (1_000_000, "SALE10", 10),     # bằng nhau: không cộng dồn
+        (1_000_000, "VIP20", 20),
+        (600_000, "SALE10", 10),
+    ])
+    def test_discount_percent(self, subtotal, coupon, expected):
+&gt;       assert S.get_discount_percent(subtotal, coupon) == expected
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_sales.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+subtotal = 100000, coupon = '  VIP20  '
+
+    def get_discount_percent(subtotal: int, coupon=None) -&gt; int:
+        if not _is_int(subtotal) or subtotal &lt; 0:
+            raise InvalidOrderError("Tạm tính phải là số nguyên không âm")
+        tier = 0
+        for threshold, percent in TIER_DISCOUNTS:
+            # BUG-03: dùng "&gt;" thay vì "&gt;=" tại biên bậc giảm giá
+            if subtotal &gt; threshold:
+                tier = percent
+                break
+        coupon_percent = 0
+        if coupon is not None:
+            if not isinstance(coupon, str):
+                raise InvalidDiscountError(f"Mã giảm giá phải là chuỗi: {coupon!r}")
+            # BUG-07: không strip()/upper() -&gt; phân biệt hoa thường, vướng khoảng trắng
+            code = coupon
+            if code:
+                if code not in COUPONS:
+&gt;                   raise InvalidDiscountError(f"Mã giảm giá không hợp lệ: {coupon!r}")
+E                   sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: '  VIP20  '
+
+sales_v1.py:151: InvalidDiscountError</failure></testcase><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[500000-SALE10-10]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[1000000-SALE10-10]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[1000000-VIP20-20]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent[600000-SALE10-10]" time="0.001" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_amount[100000-10-10000]" time="0.001" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_amount[999-10-99]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_amount[100-0-0]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_amount[100-100-100]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_amount[0-50-0]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_percent_out_of_range[101]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidDiscountError">self = &lt;test_sales.TestDiscountBoundary object at 0x7f1c2ff5b460&gt;, percent = 101
+
+    @pytest.mark.parametrize("percent", [101, 1000, -1])
+    def test_apply_discount_percent_out_of_range(self, percent):
+&gt;       with pytest.raises(S.InvalidDiscountError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidDiscountError
+
+test_sales.py:185: Failed</failure></testcase><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_percent_out_of_range[1000]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidDiscountError">self = &lt;test_sales.TestDiscountBoundary object at 0x7f1c2ff5b5b0&gt;
+percent = 1000
+
+    @pytest.mark.parametrize("percent", [101, 1000, -1])
+    def test_apply_discount_percent_out_of_range(self, percent):
+&gt;       with pytest.raises(S.InvalidDiscountError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidDiscountError
+
+test_sales.py:185: Failed</failure></testcase><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_percent_out_of_range[-1]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_percent_wrong_type[10.5]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_percent_wrong_type[True]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_percent_wrong_type[10]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_percent_wrong_type[None]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_apply_discount_negative_subtotal" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_invalid_coupon[FAKE]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_invalid_coupon[SALE11]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_invalid_coupon[123]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_invalid_coupon[coupon3]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent_invalid_subtotal[-1]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent_invalid_subtotal[1.5]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent_invalid_subtotal[100]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent_invalid_subtotal[None]" time="0.000" /><testcase classname="test_sales.TestDiscountBoundary" name="test_discount_percent_invalid_subtotal[True]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_fee[0-0]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_fee[1-30000]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_fee[499999-30000]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_fee[500000-0]" time="0.000"><failure message="assert 30000 == 0&#10; +  where 30000 = &lt;function calculate_shipping at 0x7f1c2ff096c0&gt;(500000)&#10; +    where &lt;function calculate_shipping at 0x7f1c2ff096c0&gt; = S.calculate_shipping">self = &lt;test_sales.TestShippingBoundary object at 0x7f1c300efce0&gt;
+amount = 500000, expected = 0
+
+    @pytest.mark.parametrize("amount,expected", [
+        (0, 0),
+        (1, 30_000),
+        (499_999, 30_000),
+        (500_000, 0),                  # đúng ngưỡng: miễn phí
+        (500_001, 0),
+    ])
+    def test_shipping_fee(self, amount, expected):
+&gt;       assert S.calculate_shipping(amount) == expected
+E       assert 30000 == 0
+E        +  where 30000 = &lt;function calculate_shipping at 0x7f1c2ff096c0&gt;(500000)
+E        +    where &lt;function calculate_shipping at 0x7f1c2ff096c0&gt; = S.calculate_shipping
+
+test_sales.py:220: AssertionError</failure></testcase><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_fee[500001-0]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_invalid_amount[-1]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_invalid_amount[1.5]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_invalid_amount[1]" time="0.000" /><testcase classname="test_sales.TestShippingBoundary" name="test_shipping_invalid_amount[None]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_amount[0-0]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_amount[6-0]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_amount[7-1]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_amount[100-8]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_amount[125-10]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_amount[1000000-80000]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_invalid_amount[-1]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_invalid_amount[2.5]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_invalid_amount[10]" time="0.000" /><testcase classname="test_sales.TestTaxBoundary" name="test_tax_invalid_amount[None]" time="0.000" /><testcase classname="test_sales.TestSubtotal" name="test_single_line" time="0.000" /><testcase classname="test_sales.TestSubtotal" name="test_multiple_lines" time="0.000" /><testcase classname="test_sales.TestSubtotal" name="test_accepts_tuple_and_list_lines" time="0.000" /><testcase classname="test_sales.TestSubtotal" name="test_duplicate_lines_are_merged" time="0.000"><failure message="AssertionError: assert [('A', 1), ('A', 2), ('B', 1)] == [('A', 3), ('B', 1)]&#10;  &#10;  At index 0 diff: ('A', 1) != ('A', 3)&#10;  Left contains one more item: ('B', 1)&#10;  Use -v to get more diff">self = &lt;test_sales.TestSubtotal object at 0x7f1c2ff802b0&gt;
+
+    def test_duplicate_lines_are_merged(self):
+&gt;       assert S.normalize_items([("A", 1), ("A", 2), ("B", 1)]) == [("A", 3), ("B", 1)]
+E       AssertionError: assert [('A', 1), ('A', 2), ('B', 1)] == [('A', 3), ('B', 1)]
+E         
+E         At index 0 diff: ('A', 1) != ('A', 3)
+E         Left contains one more item: ('B', 1)
+E         Use -v to get more diff
+
+test_sales.py:260: AssertionError</failure></testcase><testcase classname="test_sales.TestSubtotal" name="test_unknown_sku" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_empty_or_wrong_container[items0]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_empty_or_wrong_container[items1]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_empty_or_wrong_container[None]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_empty_or_wrong_container[A001]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_empty_or_wrong_container[5]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_empty_or_wrong_container[items5]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_malformed_line[line0]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_malformed_line[line1]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_malformed_line[A001]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_malformed_line[None]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_malformed_line[5]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_malformed_line[line5]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_non_string_sku[123]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_non_string_sku[None]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_non_string_sku[1.5]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_non_string_sku[sku3]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_quantity_in_order[0]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestNegativeOrderInput object at 0x7f1c2ff40d60&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe18b40&gt;, qty = 0
+
+    @pytest.mark.parametrize("qty", [0, -3, 1001, 2.5, "2", None, True])
+    def test_invalid_quantity_in_order(self, inv, qty):
+        before = snapshot(inv)
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:291: Failed</failure></testcase><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_quantity_in_order[-3]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_quantity_in_order[1001]" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_quantity_in_order[2.5]" time="0.000"><failure message="sales_v1.InvalidOrderError: Tạm tính phải là số nguyên không âm">self = &lt;test_sales.TestNegativeOrderInput object at 0x7f1c2ff3ce10&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe18d70&gt;, qty = 2.5
+
+    @pytest.mark.parametrize("qty", [0, -3, 1001, 2.5, "2", None, True])
+    def test_invalid_quantity_in_order(self, inv, qty):
+        before = snapshot(inv)
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.process_order(inv, [("A001", qty)])
+
+test_sales.py:292: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:188: in process_order
+    percent = get_discount_percent(subtotal, coupon)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+subtotal = 25000.0, coupon = None
+
+    def get_discount_percent(subtotal: int, coupon=None) -&gt; int:
+        if not _is_int(subtotal) or subtotal &lt; 0:
+&gt;           raise InvalidOrderError("Tạm tính phải là số nguyên không âm")
+E           sales_v1.InvalidOrderError: Tạm tính phải là số nguyên không âm
+
+sales_v1.py:136: InvalidOrderError</failure></testcase><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_quantity_in_order[2]" time="0.000"><failure message="TypeError: '&lt;' not supported between instances of 'str' and 'int'">self = &lt;test_sales.TestNegativeOrderInput object at 0x7f1c300bfad0&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe1aad0&gt;, qty = '2'
+
+    @pytest.mark.parametrize("qty", [0, -3, 1001, 2.5, "2", None, True])
+    def test_invalid_quantity_in_order(self, inv, qty):
+        before = snapshot(inv)
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.process_order(inv, [("A001", qty)])
+
+test_sales.py:292: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:181: in process_order
+    lines = normalize_items(items)
+            ^^^^^^^^^^^^^^^^^^^^^^
+sales_v1.py:121: in normalize_items
+    validate_quantity(qty)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+qty = '2'
+
+    def validate_quantity(qty) -&gt; int:
+        # BUG-09: không kiểm tra kiểu dữ liệu -&gt; chấp nhận float (2.5), bool (True)
+        # BUG-01: dùng "qty &lt; 0" thay vì "qty &lt;= 0" -&gt; chấp nhận số lượng bằng 0
+&gt;       if qty &lt; 0:
+           ^^^^^^^
+E       TypeError: '&lt;' not supported between instances of 'str' and 'int'
+
+sales_v1.py:68: TypeError</failure></testcase><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_quantity_in_order[None]" time="0.000"><failure message="TypeError: '&lt;' not supported between instances of 'NoneType' and 'int'">self = &lt;test_sales.TestNegativeOrderInput object at 0x7f1c2ff96050&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe1ae40&gt;, qty = None
+
+    @pytest.mark.parametrize("qty", [0, -3, 1001, 2.5, "2", None, True])
+    def test_invalid_quantity_in_order(self, inv, qty):
+        before = snapshot(inv)
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.process_order(inv, [("A001", qty)])
+
+test_sales.py:292: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:181: in process_order
+    lines = normalize_items(items)
+            ^^^^^^^^^^^^^^^^^^^^^^
+sales_v1.py:121: in normalize_items
+    validate_quantity(qty)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+qty = None
+
+    def validate_quantity(qty) -&gt; int:
+        # BUG-09: không kiểm tra kiểu dữ liệu -&gt; chấp nhận float (2.5), bool (True)
+        # BUG-01: dùng "qty &lt; 0" thay vì "qty &lt;= 0" -&gt; chấp nhận số lượng bằng 0
+&gt;       if qty &lt; 0:
+           ^^^^^^^
+E       TypeError: '&lt;' not supported between instances of 'NoneType' and 'int'
+
+sales_v1.py:68: TypeError</failure></testcase><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_quantity_in_order[True]" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestNegativeOrderInput object at 0x7f1c2ff961d0&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe1b250&gt;, qty = True
+
+    @pytest.mark.parametrize("qty", [0, -3, 1001, 2.5, "2", None, True])
+    def test_invalid_quantity_in_order(self, inv, qty):
+        before = snapshot(inv)
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:291: Failed</failure></testcase><testcase classname="test_sales.TestNegativeOrderInput" name="test_unknown_product_in_order" time="0.000" /><testcase classname="test_sales.TestNegativeOrderInput" name="test_invalid_coupon_does_not_change_stock" time="0.001"><failure message="AssertionError: assert {'A001': 95, ...D004': 2, ...} == {'A001': 100,...D004': 2, ...}&#10;  &#10;  Omitting 4 identical items, use -vv to show&#10;  Differing items:&#10;  {'A001': 95} != {'A001': 100}&#10;  Use -v to get more diff">self = &lt;test_sales.TestNegativeOrderInput object at 0x7f1c2ff99860&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe18f50&gt;
+
+    def test_invalid_coupon_does_not_change_stock(self, inv):
+        before = snapshot(inv)
+        with pytest.raises(S.InvalidDiscountError):
+            S.process_order(inv, [("A001", 5)], coupon="FAKE")
+&gt;       assert snapshot(inv) == before
+E       AssertionError: assert {'A001': 95, ...D004': 2, ...} == {'A001': 100,...D004': 2, ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'A001': 95} != {'A001': 100}
+E         Use -v to get more diff
+
+test_sales.py:303: AssertionError</failure></testcase><testcase classname="test_sales.TestNegativeOrderInput" name="test_out_of_stock_product" time="0.000" /><testcase classname="test_sales.TestProcessOrder" name="test_small_order_pays_shipping" time="0.000" /><testcase classname="test_sales.TestProcessOrder" name="test_tier5_order" time="0.000"><failure message="assert 48000 == 45600">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ff90410&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe19ef0&gt;
+
+    def test_tier5_order(self, inv):
+        # 2 x 300.000 = 600.000; giảm 5% = 30.000; net 570.000; ship 0; thuế 45.600
+        r = S.process_order(inv, [("C003", 2)])
+        assert (r["discount_percent"], r["discount"], r["net"]) == (5, 30_000, 570_000)
+        assert r["shipping"] == 0
+&gt;       assert r["tax"] == 45_600
+E       assert 48000 == 45600
+
+test_sales.py:329: AssertionError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_tier10_order" time="0.000"><failure message="assert 96000 == 86400">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ff80640&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe19180&gt;
+
+    def test_tier10_order(self, inv):
+        # 1.200.000; giảm 10% = 120.000; net 1.080.000; thuế 86.400
+        r = S.process_order(inv, [("D004", 1)])
+        assert r["discount"] == 120_000
+&gt;       assert r["tax"] == 86_400
+E       assert 96000 == 86400
+
+test_sales.py:336: AssertionError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_boundary_exactly_1m_gets_10_percent" time="0.000"><failure message="assert 5 == 10">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ff80770&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe19770&gt;
+
+    def test_boundary_exactly_1m_gets_10_percent(self, inv):
+        # 40 x 25.000 = 1.000.000 -&gt; 10%
+        r = S.process_order(inv, [("B002", 40)])
+&gt;       assert r["discount_percent"] == 10
+E       assert 5 == 10
+
+test_sales.py:342: AssertionError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_boundary_exactly_500k_gets_5_percent" time="0.000"><failure message="assert 0 == 5">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ff8b650&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe196d0&gt;
+
+    def test_boundary_exactly_500k_gets_5_percent(self, inv):
+        # 20 x 25.000 = 500.000 -&gt; 5% = 25.000; net 475.000 &lt; 500k nên còn ship
+        r = S.process_order(inv, [("B002", 20)])
+&gt;       assert r["discount_percent"] == 5
+E       assert 0 == 5
+
+test_sales.py:348: AssertionError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_coupon_case_insensitive" time="0.000"><failure message="sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: 'sale10'">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ff0d8c0&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe19d60&gt;
+
+    def test_coupon_case_insensitive(self, inv):
+        # 5 x 10.000 = 50.000; SALE10 -&gt; 5.000; net 45.000; ship 30.000; thuế 3.600
+&gt;       r = S.process_order(inv, [("A001", 5)], coupon="sale10")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_sales.py:355: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:188: in process_order
+    percent = get_discount_percent(subtotal, coupon)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+subtotal = 50000, coupon = 'sale10'
+
+    def get_discount_percent(subtotal: int, coupon=None) -&gt; int:
+        if not _is_int(subtotal) or subtotal &lt; 0:
+            raise InvalidOrderError("Tạm tính phải là số nguyên không âm")
+        tier = 0
+        for threshold, percent in TIER_DISCOUNTS:
+            # BUG-03: dùng "&gt;" thay vì "&gt;=" tại biên bậc giảm giá
+            if subtotal &gt; threshold:
+                tier = percent
+                break
+        coupon_percent = 0
+        if coupon is not None:
+            if not isinstance(coupon, str):
+                raise InvalidDiscountError(f"Mã giảm giá phải là chuỗi: {coupon!r}")
+            # BUG-07: không strip()/upper() -&gt; phân biệt hoa thường, vướng khoảng trắng
+            code = coupon
+            if code:
+                if code not in COUPONS:
+&gt;                   raise InvalidDiscountError(f"Mã giảm giá không hợp lệ: {coupon!r}")
+E                   sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: 'sale10'
+
+sales_v1.py:151: InvalidDiscountError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_better_coupon_beats_tier" time="0.000"><failure message="assert 558000 == 548400">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ff0d9d0&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe1a940&gt;
+
+    def test_better_coupon_beats_tier(self, inv):
+        # 600.000; VIP20 -&gt; 120.000; net 480.000; ship 30.000; thuế 38.400
+        r = S.process_order(inv, [("C003", 2)], coupon="VIP20")
+        assert r["discount_percent"] == 20
+&gt;       assert r["total"] == 548_400
+E       assert 558000 == 548400
+
+test_sales.py:363: AssertionError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_buy_exactly_all_stock" time="0.000"><failure message="sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2fefdb50&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe1af80&gt;
+
+    def test_buy_exactly_all_stock(self, inv):
+        # 5 x 300.000 = 1.500.000; giảm 10%; net 1.350.000; thuế 108.000
+&gt;       r = S.process_order(inv, [("C003", 5)])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_sales.py:367: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:185: in process_order
+    inventory.deduct(sku, qty)
+sales_v1.py:103: in deduct
+    self.check_availability(sku, qty)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;sales_v1.Inventory object at 0x7f1c2fe1af80&gt;, sku = 'C003', qty = 5
+
+    def check_availability(self, sku, qty) -&gt; None:
+        validate_quantity(qty)
+        product = self.get(sku)
+        # BUG-02: dùng "&gt;=" -&gt; mua đúng bằng số tồn bị từ chối nhầm
+        if qty &gt;= product.stock:
+&gt;           raise OutOfStockError(f"{sku}: cần {qty}, chỉ còn {product.stock}")
+E           sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5
+
+sales_v1.py:100: OutOfStockError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_multi_line_order_deducts_each" time="0.000" /><testcase classname="test_sales.TestProcessOrder" name="test_restock_then_order" time="0.000"><failure message="sales_v1.OutOfStockError: E005: cần 3, chỉ còn 3">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ff20d70&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe1b3e0&gt;
+
+    def test_restock_then_order(self, inv):
+        inv.restock("E005", 3)
+&gt;       S.process_order(inv, [("E005", 3)])
+
+test_sales.py:378: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:185: in process_order
+    inventory.deduct(sku, qty)
+sales_v1.py:103: in deduct
+    self.check_availability(sku, qty)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;sales_v1.Inventory object at 0x7f1c2fe1b3e0&gt;, sku = 'E005', qty = 3
+
+    def check_availability(self, sku, qty) -&gt; None:
+        validate_quantity(qty)
+        product = self.get(sku)
+        # BUG-02: dùng "&gt;=" -&gt; mua đúng bằng số tồn bị từ chối nhầm
+        if qty &gt;= product.stock:
+&gt;           raise OutOfStockError(f"{sku}: cần {qty}, chỉ còn {product.stock}")
+E           sales_v1.OutOfStockError: E005: cần 3, chỉ còn 3
+
+sales_v1.py:100: OutOfStockError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_total_invariant[items0-None]" time="0.000" /><testcase classname="test_sales.TestProcessOrder" name="test_total_invariant[items1-None]" time="0.001"><failure message="assert 60000 == 57000&#10; +  where 57000 = &lt;function calculate_tax at 0x7f1c2ff09760&gt;(712500)&#10; +    where &lt;function calculate_tax at 0x7f1c2ff09760&gt; = S.calculate_tax">self = &lt;test_sales.TestProcessOrder object at 0x7f1c2ffa1a90&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe19ef0&gt;
+items = [('A001', 50), ('B002', 10)], coupon = None
+
+    @pytest.mark.parametrize("items,coupon", [
+        ([("A001", 1)], None),
+        ([("A001", 50), ("B002", 10)], None),
+        ([("B002", 20)], None),
+        ([("B002", 40)], "VIP20"),
+        ([("C003", 5), ("D004", 2)], "SALE10"),
+    ])
+    def test_total_invariant(self, inv, items, coupon):
+        """Bất biến: total = subtotal - discount + shipping + tax."""
+        r = S.process_order(inv, items, coupon)
+        assert r["net"] == r["subtotal"] - r["discount"]
+        assert r["total"] == r["net"] + r["shipping"] + r["tax"]
+        assert 0 &lt;= r["discount"] &lt;= r["subtotal"]
+&gt;       assert r["tax"] == S.calculate_tax(r["net"])
+E       assert 60000 == 57000
+E        +  where 57000 = &lt;function calculate_tax at 0x7f1c2ff09760&gt;(712500)
+E        +    where &lt;function calculate_tax at 0x7f1c2ff09760&gt; = S.calculate_tax
+
+test_sales.py:394: AssertionError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_total_invariant[items2-None]" time="0.000" /><testcase classname="test_sales.TestProcessOrder" name="test_total_invariant[items3-VIP20]" time="0.000"><failure message="assert 80000 == 64000&#10; +  where 64000 = &lt;function calculate_tax at 0x7f1c2ff09760&gt;(800000)&#10; +    where &lt;function calculate_tax at 0x7f1c2ff09760&gt; = S.calculate_tax">self = &lt;test_sales.TestProcessOrder object at 0x7f1c30167860&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe45590&gt;, items = [('B002', 40)]
+coupon = 'VIP20'
+
+    @pytest.mark.parametrize("items,coupon", [
+        ([("A001", 1)], None),
+        ([("A001", 50), ("B002", 10)], None),
+        ([("B002", 20)], None),
+        ([("B002", 40)], "VIP20"),
+        ([("C003", 5), ("D004", 2)], "SALE10"),
+    ])
+    def test_total_invariant(self, inv, items, coupon):
+        """Bất biến: total = subtotal - discount + shipping + tax."""
+        r = S.process_order(inv, items, coupon)
+        assert r["net"] == r["subtotal"] - r["discount"]
+        assert r["total"] == r["net"] + r["shipping"] + r["tax"]
+        assert 0 &lt;= r["discount"] &lt;= r["subtotal"]
+&gt;       assert r["tax"] == S.calculate_tax(r["net"])
+E       assert 80000 == 64000
+E        +  where 64000 = &lt;function calculate_tax at 0x7f1c2ff09760&gt;(800000)
+E        +    where &lt;function calculate_tax at 0x7f1c2ff09760&gt; = S.calculate_tax
+
+test_sales.py:394: AssertionError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_total_invariant[items4-SALE10]" time="0.000"><failure message="sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5">self = &lt;test_sales.TestProcessOrder object at 0x7f1c3015d550&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe456d0&gt;
+items = [('C003', 5), ('D004', 2)], coupon = 'SALE10'
+
+    @pytest.mark.parametrize("items,coupon", [
+        ([("A001", 1)], None),
+        ([("A001", 50), ("B002", 10)], None),
+        ([("B002", 20)], None),
+        ([("B002", 40)], "VIP20"),
+        ([("C003", 5), ("D004", 2)], "SALE10"),
+    ])
+    def test_total_invariant(self, inv, items, coupon):
+        """Bất biến: total = subtotal - discount + shipping + tax."""
+&gt;       r = S.process_order(inv, items, coupon)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_sales.py:390: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:185: in process_order
+    inventory.deduct(sku, qty)
+sales_v1.py:103: in deduct
+    self.check_availability(sku, qty)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;sales_v1.Inventory object at 0x7f1c2fe456d0&gt;, sku = 'C003', qty = 5
+
+    def check_availability(self, sku, qty) -&gt; None:
+        validate_quantity(qty)
+        product = self.get(sku)
+        # BUG-02: dùng "&gt;=" -&gt; mua đúng bằng số tồn bị từ chối nhầm
+        if qty &gt;= product.stock:
+&gt;           raise OutOfStockError(f"{sku}: cần {qty}, chỉ còn {product.stock}")
+E           sales_v1.OutOfStockError: C003: cần 5, chỉ còn 5
+
+sales_v1.py:100: OutOfStockError</failure></testcase><testcase classname="test_sales.TestProcessOrder" name="test_result_contains_line_details" time="0.000" /><testcase classname="test_sales.TestRegression" name="test_bug06_failed_order_is_atomic" time="0.000"><failure message="AssertionError: assert {'A001': 95, ...D004': 2, ...} == {'A001': 100,...D004': 2, ...}&#10;  &#10;  Omitting 4 identical items, use -vv to show&#10;  Differing items:&#10;  {'A001': 95} != {'A001': 100}&#10;  Use -v to get more diff">self = &lt;test_sales.TestRegression object at 0x7f1c2ff90690&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe46530&gt;
+
+    def test_bug06_failed_order_is_atomic(self, inv):
+        """Dòng 2 hết hàng thì dòng 1 KHÔNG được bị trừ kho."""
+        before = snapshot(inv)
+        with pytest.raises(S.OutOfStockError):
+            S.process_order(inv, [("A001", 5), ("C003", 10)])
+&gt;       assert snapshot(inv) == before
+E       AssertionError: assert {'A001': 95, ...D004': 2, ...} == {'A001': 100,...D004': 2, ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'A001': 95} != {'A001': 100}
+E         Use -v to get more diff
+
+test_sales.py:411: AssertionError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug10_duplicate_lines_checked_together" time="0.001"><failure message="AssertionError: assert {'A001': 100,...D004': 2, ...} == {'A001': 100,...D004': 2, ...}&#10;  &#10;  Omitting 4 identical items, use -vv to show&#10;  Differing items:&#10;  {'C003': 2} != {'C003': 5}&#10;  Use -v to get more diff">self = &lt;test_sales.TestRegression object at 0x7f1c2ff90550&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe46350&gt;
+
+    def test_bug10_duplicate_lines_checked_together(self, inv):
+        """2 dòng C003 x3 (tổng 6) vượt tồn 5 phải bị từ chối."""
+        before = snapshot(inv)
+        with pytest.raises(S.OutOfStockError):
+            S.process_order(inv, [("C003", 3), ("C003", 3)])
+&gt;       assert snapshot(inv) == before
+E       AssertionError: assert {'A001': 100,...D004': 2, ...} == {'A001': 100,...D004': 2, ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'C003': 2} != {'C003': 5}
+E         Use -v to get more diff
+
+test_sales.py:418: AssertionError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug05_tax_uses_discounted_amount" time="0.000"><failure message="assert 96000 == 86400&#10; +  where 86400 = &lt;function calculate_tax at 0x7f1c2ff09760&gt;(1080000)&#10; +    where &lt;function calculate_tax at 0x7f1c2ff09760&gt; = S.calculate_tax">self = &lt;test_sales.TestRegression object at 0x7f1c2ff808a0&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe46710&gt;
+
+    def test_bug05_tax_uses_discounted_amount(self, inv):
+        r = S.process_order(inv, [("D004", 1)])
+&gt;       assert r["tax"] == S.calculate_tax(r["net"])
+E       assert 96000 == 86400
+E        +  where 86400 = &lt;function calculate_tax at 0x7f1c2ff09760&gt;(1080000)
+E        +    where &lt;function calculate_tax at 0x7f1c2ff09760&gt; = S.calculate_tax
+
+test_sales.py:422: AssertionError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug04_discount_never_exceeds_subtotal" time="0.000"><failure message="Failed: DID NOT RAISE InvalidDiscountError">self = &lt;test_sales.TestRegression object at 0x7f1c2ff809d0&gt;
+
+    def test_bug04_discount_never_exceeds_subtotal(self):
+&gt;       with pytest.raises(S.InvalidDiscountError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidDiscountError
+
+test_sales.py:426: Failed</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug01_zero_quantity_rejected_in_order" time="0.000"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestRegression object at 0x7f1c2ff88dd0&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe46c60&gt;
+
+    def test_bug01_zero_quantity_rejected_in_order(self, inv):
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:430: Failed</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug07_coupon_with_spaces_and_lowercase" time="0.000"><failure message="sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: ' vip20 '">self = &lt;test_sales.TestRegression object at 0x7f1c2ff0dae0&gt;
+
+    def test_bug07_coupon_with_spaces_and_lowercase(self):
+&gt;       assert S.get_discount_percent(100_000, " vip20 ") == 20
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_sales.py:434: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+subtotal = 100000, coupon = ' vip20 '
+
+    def get_discount_percent(subtotal: int, coupon=None) -&gt; int:
+        if not _is_int(subtotal) or subtotal &lt; 0:
+            raise InvalidOrderError("Tạm tính phải là số nguyên không âm")
+        tier = 0
+        for threshold, percent in TIER_DISCOUNTS:
+            # BUG-03: dùng "&gt;" thay vì "&gt;=" tại biên bậc giảm giá
+            if subtotal &gt; threshold:
+                tier = percent
+                break
+        coupon_percent = 0
+        if coupon is not None:
+            if not isinstance(coupon, str):
+                raise InvalidDiscountError(f"Mã giảm giá phải là chuỗi: {coupon!r}")
+            # BUG-07: không strip()/upper() -&gt; phân biệt hoa thường, vướng khoảng trắng
+            code = coupon
+            if code:
+                if code not in COUPONS:
+&gt;                   raise InvalidDiscountError(f"Mã giảm giá không hợp lệ: {coupon!r}")
+E                   sales_v1.InvalidDiscountError: Mã giảm giá không hợp lệ: ' vip20 '
+
+sales_v1.py:151: InvalidDiscountError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug08_free_shipping_at_threshold" time="0.000"><failure message="assert 30000 == 0&#10; +  where 30000 = &lt;function calculate_shipping at 0x7f1c2ff096c0&gt;(500000)&#10; +    where &lt;function calculate_shipping at 0x7f1c2ff096c0&gt; = S.calculate_shipping">self = &lt;test_sales.TestRegression object at 0x7f1c2ff0dbf0&gt;
+
+    def test_bug08_free_shipping_at_threshold(self):
+&gt;       assert S.calculate_shipping(500_000) == 0
+E       assert 30000 == 0
+E        +  where 30000 = &lt;function calculate_shipping at 0x7f1c2ff096c0&gt;(500000)
+E        +    where &lt;function calculate_shipping at 0x7f1c2ff096c0&gt; = S.calculate_shipping
+
+test_sales.py:437: AssertionError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug02_exact_stock_is_allowed" time="0.000"><failure message="sales_v1.OutOfStockError: D004: cần 2, chỉ còn 2">self = &lt;test_sales.TestRegression object at 0x7f1c2fefdd50&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe472f0&gt;
+
+    def test_bug02_exact_stock_is_allowed(self, inv):
+&gt;       S.process_order(inv, [("D004", 2)])
+
+test_sales.py:440: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sales_v1.py:185: in process_order
+    inventory.deduct(sku, qty)
+sales_v1.py:103: in deduct
+    self.check_availability(sku, qty)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;sales_v1.Inventory object at 0x7f1c2fe472f0&gt;, sku = 'D004', qty = 2
+
+    def check_availability(self, sku, qty) -&gt; None:
+        validate_quantity(qty)
+        product = self.get(sku)
+        # BUG-02: dùng "&gt;=" -&gt; mua đúng bằng số tồn bị từ chối nhầm
+        if qty &gt;= product.stock:
+&gt;           raise OutOfStockError(f"{sku}: cần {qty}, chỉ còn {product.stock}")
+E           sales_v1.OutOfStockError: D004: cần 2, chỉ còn 2
+
+sales_v1.py:100: OutOfStockError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug03_discount_tier_thresholds_are_inclusive" time="0.003"><failure message="assert 0 == 5&#10; +  where 0 = &lt;function get_discount_percent at 0x7f1c2ff09580&gt;(500000)&#10; +    where &lt;function get_discount_percent at 0x7f1c2ff09580&gt; = S.get_discount_percent">self = &lt;test_sales.TestRegression object at 0x7f1c2fefde50&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe46e40&gt;
+
+    def test_bug03_discount_tier_thresholds_are_inclusive(self, inv):
+        """Đúng mốc 500.000 -&gt; 5% và đúng mốc 1.000.000 -&gt; 10% (không phải mức thấp hơn)."""
+&gt;       assert S.get_discount_percent(500_000) == 5
+E       assert 0 == 5
+E        +  where 0 = &lt;function get_discount_percent at 0x7f1c2ff09580&gt;(500000)
+E        +    where &lt;function get_discount_percent at 0x7f1c2ff09580&gt; = S.get_discount_percent
+
+test_sales.py:445: AssertionError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug09_non_integer_quantity_rejected_everywhere[2.5]" time="0.001"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestRegression object at 0x7f1c2ff20f50&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe47ca0&gt;, qty = 2.5
+
+    @pytest.mark.parametrize("qty", [2.5, True, "3", None])
+    def test_bug09_non_integer_quantity_rejected_everywhere(self, inv, qty):
+        """Số lượng sai kiểu phải ném InvalidQuantityError ở mọi điểm vào, không TypeError/lọt qua."""
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:453: Failed</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug09_non_integer_quantity_rejected_everywhere[True]" time="0.001"><failure message="Failed: DID NOT RAISE InvalidQuantityError">self = &lt;test_sales.TestRegression object at 0x7f1c2ff21040&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe47890&gt;, qty = True
+
+    @pytest.mark.parametrize("qty", [2.5, True, "3", None])
+    def test_bug09_non_integer_quantity_rejected_everywhere(self, inv, qty):
+        """Số lượng sai kiểu phải ném InvalidQuantityError ở mọi điểm vào, không TypeError/lọt qua."""
+&gt;       with pytest.raises(S.InvalidQuantityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidQuantityError
+
+test_sales.py:453: Failed</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug09_non_integer_quantity_rejected_everywhere[3]" time="0.001"><failure message="TypeError: '&lt;' not supported between instances of 'str' and 'int'">self = &lt;test_sales.TestRegression object at 0x7f1c2ffa1010&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe47a70&gt;, qty = '3'
+
+    @pytest.mark.parametrize("qty", [2.5, True, "3", None])
+    def test_bug09_non_integer_quantity_rejected_everywhere(self, inv, qty):
+        """Số lượng sai kiểu phải ném InvalidQuantityError ở mọi điểm vào, không TypeError/lọt qua."""
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.validate_quantity(qty)
+
+test_sales.py:454: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+qty = '3'
+
+    def validate_quantity(qty) -&gt; int:
+        # BUG-09: không kiểm tra kiểu dữ liệu -&gt; chấp nhận float (2.5), bool (True)
+        # BUG-01: dùng "qty &lt; 0" thay vì "qty &lt;= 0" -&gt; chấp nhận số lượng bằng 0
+&gt;       if qty &lt; 0:
+           ^^^^^^^
+E       TypeError: '&lt;' not supported between instances of 'str' and 'int'
+
+sales_v1.py:68: TypeError</failure></testcase><testcase classname="test_sales.TestRegression" name="test_bug09_non_integer_quantity_rejected_everywhere[None]" time="0.001"><failure message="TypeError: '&lt;' not supported between instances of 'NoneType' and 'int'">self = &lt;test_sales.TestRegression object at 0x7f1c2ffa0d70&gt;
+inv = &lt;sales_v1.Inventory object at 0x7f1c2fe46850&gt;, qty = None
+
+    @pytest.mark.parametrize("qty", [2.5, True, "3", None])
+    def test_bug09_non_integer_quantity_rejected_everywhere(self, inv, qty):
+        """Số lượng sai kiểu phải ném InvalidQuantityError ở mọi điểm vào, không TypeError/lọt qua."""
+        with pytest.raises(S.InvalidQuantityError):
+&gt;           S.validate_quantity(qty)
+
+test_sales.py:454: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+qty = None
+
+    def validate_quantity(qty) -&gt; int:
+        # BUG-09: không kiểm tra kiểu dữ liệu -&gt; chấp nhận float (2.5), bool (True)
+        # BUG-01: dùng "qty &lt; 0" thay vì "qty &lt;= 0" -&gt; chấp nhận số lượng bằng 0
+&gt;       if qty &lt; 0:
+           ^^^^^^^
+E       TypeError: '&lt;' not supported between instances of 'NoneType' and 'int'
+
+sales_v1.py:68: TypeError</failure></testcase></testsuite></testsuites>

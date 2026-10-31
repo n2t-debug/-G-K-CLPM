@@ -1,0 +1,127 @@
+{
+  "BUG-01": {
+    "description": "Cho phép số lượng = 0 (dùng < thay vì <=)",
+    "total_tests": 166,
+    "failed": [
+      "TestInventory::test_restock_invalid_quantity[0]",
+      "TestQuantityBoundary::test_out_of_range_quantities[0]",
+      "TestNegativeOrderInput::test_invalid_quantity_in_order[0]",
+      "TestRegression::test_bug01_zero_quantity_rejected_in_order"
+    ],
+    "detected": true
+  },
+  "BUG-02": {
+    "description": "Từ chối mua đúng bằng tồn kho (dùng >= thay vì >)",
+    "total_tests": 166,
+    "failed": [
+      "TestInventory::test_deduct_all_stock_leaves_zero",
+      "TestAvailabilityBoundary::test_exactly_stock",
+      "TestProcessOrder::test_buy_exactly_all_stock",
+      "TestProcessOrder::test_restock_then_order",
+      "TestProcessOrder::test_total_invariant[items4-SALE10]",
+      "TestRegression::test_bug02_exact_stock_is_allowed"
+    ],
+    "detected": true
+  },
+  "BUG-03": {
+    "description": "Sai biên bậc giảm giá (> thay vì >=)",
+    "total_tests": 166,
+    "failed": [
+      "TestDiscountBoundary::test_discount_percent[500000-None-5]",
+      "TestDiscountBoundary::test_discount_percent[1000000-None-10]",
+      "TestProcessOrder::test_boundary_exactly_1m_gets_10_percent",
+      "TestProcessOrder::test_boundary_exactly_500k_gets_5_percent",
+      "TestRegression::test_bug03_discount_tier_thresholds_are_inclusive"
+    ],
+    "detected": true
+  },
+  "BUG-04": {
+    "description": "Không chặn % giảm giá > 100",
+    "total_tests": 166,
+    "failed": [
+      "TestDiscountBoundary::test_apply_discount_percent_out_of_range[101]",
+      "TestDiscountBoundary::test_apply_discount_percent_out_of_range[1000]",
+      "TestRegression::test_bug04_discount_never_exceeds_subtotal"
+    ],
+    "detected": true
+  },
+  "BUG-05": {
+    "description": "Tính thuế trên tạm tính thay vì tiền sau giảm giá",
+    "total_tests": 166,
+    "failed": [
+      "TestProcessOrder::test_tier5_order",
+      "TestProcessOrder::test_tier10_order",
+      "TestProcessOrder::test_boundary_exactly_1m_gets_10_percent",
+      "TestProcessOrder::test_boundary_exactly_500k_gets_5_percent",
+      "TestProcessOrder::test_coupon_case_insensitive",
+      "TestProcessOrder::test_better_coupon_beats_tier",
+      "TestProcessOrder::test_buy_exactly_all_stock",
+      "TestProcessOrder::test_total_invariant[items1-None]",
+      "TestProcessOrder::test_total_invariant[items2-None]",
+      "TestProcessOrder::test_total_invariant[items3-VIP20]",
+      "TestProcessOrder::test_total_invariant[items4-SALE10]",
+      "TestRegression::test_bug05_tax_uses_discounted_amount"
+    ],
+    "detected": true
+  },
+  "BUG-06": {
+    "description": "Trừ kho từng dòng khi đang kiểm tra (không nguyên tử)",
+    "total_tests": 166,
+    "failed": [
+      "TestNegativeOrderInput::test_invalid_coupon_does_not_change_stock",
+      "TestRegression::test_bug06_failed_order_is_atomic"
+    ],
+    "detected": true
+  },
+  "BUG-07": {
+    "description": "Mã giảm giá phân biệt hoa/thường và không bỏ khoảng trắng",
+    "total_tests": 166,
+    "failed": [
+      "TestDiscountBoundary::test_discount_percent[100000-   -0]",
+      "TestDiscountBoundary::test_discount_percent[100000-sale10-10]",
+      "TestDiscountBoundary::test_discount_percent[100000-  VIP20  -20]",
+      "TestProcessOrder::test_coupon_case_insensitive",
+      "TestRegression::test_bug07_coupon_with_spaces_and_lowercase"
+    ],
+    "detected": true
+  },
+  "BUG-08": {
+    "description": "Sai biên miễn phí vận chuyển (> thay vì >=)",
+    "total_tests": 166,
+    "failed": [
+      "TestShippingBoundary::test_shipping_fee[500000-0]",
+      "TestRegression::test_bug08_free_shipping_at_threshold"
+    ],
+    "detected": true
+  },
+  "BUG-09": {
+    "description": "Không kiểm tra kiểu số lượng (float/bool/chuỗi lọt qua)",
+    "total_tests": 166,
+    "failed": [
+      "TestQuantityBoundary::test_wrong_type_quantities[2.5]",
+      "TestQuantityBoundary::test_wrong_type_quantities[1.0]",
+      "TestQuantityBoundary::test_wrong_type_quantities[3]",
+      "TestQuantityBoundary::test_wrong_type_quantities[None]",
+      "TestQuantityBoundary::test_wrong_type_quantities[True]",
+      "TestQuantityBoundary::test_wrong_type_quantities[qty6]",
+      "TestNegativeOrderInput::test_invalid_quantity_in_order[2.5]",
+      "TestNegativeOrderInput::test_invalid_quantity_in_order[2]",
+      "TestNegativeOrderInput::test_invalid_quantity_in_order[None]",
+      "TestNegativeOrderInput::test_invalid_quantity_in_order[True]",
+      "TestRegression::test_bug09_non_integer_quantity_rejected_everywhere[2.5]",
+      "TestRegression::test_bug09_non_integer_quantity_rejected_everywhere[True]",
+      "TestRegression::test_bug09_non_integer_quantity_rejected_everywhere[3]",
+      "TestRegression::test_bug09_non_integer_quantity_rejected_everywhere[None]"
+    ],
+    "detected": true
+  },
+  "BUG-10": {
+    "description": "Không gộp dòng trùng SKU khi kiểm tra tồn kho",
+    "total_tests": 166,
+    "failed": [
+      "TestSubtotal::test_duplicate_lines_are_merged",
+      "TestRegression::test_bug10_duplicate_lines_checked_together"
+    ],
+    "detected": true
+  }
+}
