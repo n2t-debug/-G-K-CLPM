@@ -1,0 +1,18 @@
+# Moi truong ao
+venv/
+.venv/
+
+# File sinh tu dong khi chay
+__pycache__/
+*.pyc
+.pytest_cache/
+mutants/
+htmlcov/
+.coverage
+coverage.xml
+
+# He dieu hanh / trinh soan thao
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
