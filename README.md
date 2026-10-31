@@ -2,8 +2,10 @@
 
 Kiểm thử đơn vị tự động và đo độ bao phủ mã nguồn với **Pytest** và **Coverage.py**.
 
-> Thành viên nhóm: _điền tên và mã sinh viên_
-> Giảng viên hướng dẫn: _điền tên_
+> Thành viên nhóm: 22
+> Nguyễn Trọng Thái - 23010457
+> Nguyễn Minh Quang - 23010419
+> Giảng viên hướng dẫn: Trịnh Thanh Bình
 
 ## 1. Giới thiệu
 
